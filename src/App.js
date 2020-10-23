@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import AudioPlayer from 'react-h5-audio-player';
+
+// Css
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-h5-audio-player/lib/styles.css';
+import './globals.css';
+
+import { Container, Row } from 'react-bootstrap'
 
 function App() {
+  const music = "music/opeth.mp3"
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="main-site">
+      <Container>
+        <Row>
+          <div className="col-lg-12 mx-auto">
+            <AudioPlayer
+              showSkipControls={true}
+              src={music}
+            />
+          </div>
+        </Row>
+      </Container>
     </div>
-  );
+  )
 }
 
 export default App;
