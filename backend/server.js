@@ -2,8 +2,11 @@ const express = require('express')
 const app = express()
 const port = 5555
 const walk = require('walk')
+const cors = require('cors')
+const path = require('path')
 
-app.use(express.static('/music'))
+app.use(express.static('public'))
+app.use(cors())
 
 app.get('/', (req, res) => {
   res.json({
@@ -13,12 +16,12 @@ app.get('/', (req, res) => {
 })
 
 app.get('/list', (req, res) => {
-  const testFolder = __dirname + '/music'
+  const testFolder = './public/'
   const ALLfiles = [] 
 
   var walker  = walk.walk(testFolder, { followLinks: false });
   walker.on('file', function(root, stat, next) {
-    ALLfiles.push(stat.name);
+    ALLfiles.push(`http://localhost:${port}/${stat.name}`);
     next();
   });
 

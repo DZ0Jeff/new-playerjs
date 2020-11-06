@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 
 // Css
@@ -7,15 +7,29 @@ import 'react-h5-audio-player/lib/styles.css';
 import './globals.css';
 
 import { Container, Row } from 'react-bootstrap'
+import api from './services/api'
+
 
 function App() {
   let [currentMusic, setCurrentMusic] = useState(0) 
+  let [playlist, setPlaylist] = useState([])
+  // let [name, setName] = useState([])
 
-  let playlist = [
-    { name: 'opeth', src: "music/opeth.mp3" },
-    { name: 'Motorhead - Ace of spades', src: "music/Ace of Spades.mp3" },
-    { name: 'Black sabbath - paranoid', src: "music/paranoid.mp3" }
-  ]
+  useEffect(() => {
+    async function load(){
+      const response = await api.get('/list')
+
+      setPlaylist(response.data)
+    }
+
+    load()
+  }, [])
+
+  playlist.map(music => {
+    console.log(
+      music.split('/')[3].split('.')[0]      
+    )
+  })
 
   function handleClickNext(){
     return currentMusic >= playlist.length - 1 ? setCurrentMusic(currentMusic = 0) : setCurrentMusic(currentMusic + 1)
@@ -30,11 +44,11 @@ function App() {
       <Container>
         <Row>
           <div className="col-lg-12 mx-auto">
-            <h1 className="text-center">{playlist[currentMusic].name}</h1>
+            <h1 className="text-center">{playlist.map(music => music.split('/')[3].split('.')[0])[currentMusic]}</h1>
             <AudioPlayer
               autoPlayAfterSrcChange={false}
               showSkipControls={true}
-              src={playlist[currentMusic].src}
+              src={playlist[currentMusic]}
               onClickNext={handleClickNext}
               onClickPrevious={handleClickPrev}
             />
